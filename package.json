@@ -1,0 +1,9 @@
+{
+  "name": "hsj-booking-form",
+  "version": "1.0.0",
+  "private": true,
+  "description": "One-click discovery call booking form for HSJ Tuition",
+  "engines": { "node": ">=18" },
+  "scripts": { "test": "node test/run.js" },
+  "dependencies": { "firebase-admin": "^12.7.0" }
+}

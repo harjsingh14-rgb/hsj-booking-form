@@ -1,0 +1,320 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Book your call | HSJ Tuition</title>
+<style>
+  :root {
+    --ink: #14202e; --muted: #5b6878; --line: #d9e0e8; --bg: #ffffff; --soft: #f4f7fa;
+    --accent: #0b6e4f; --accent-ink: #ffffff; --accent-soft: #e6f3ee; --error: #b3261e;
+    --radius: 12px;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; background: transparent; }
+  body { font: 16px/1.45 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; color: var(--ink); }
+  .card { max-width: 520px; margin: 0 auto; background: var(--bg); border: 1px solid var(--line); border-radius: 16px; padding: 22px 20px 24px; }
+  .bar { height: 6px; background: var(--soft); border-radius: 99px; overflow: hidden; margin-bottom: 18px; }
+  .bar i { display: block; height: 100%; width: 0; background: var(--accent); border-radius: 99px; transition: width .3s ease; }
+  .back { background: none; border: 0; color: var(--muted); font: inherit; font-size: 14px; padding: 0; margin: 0 0 10px; cursor: pointer; }
+  .back[hidden] { display: none; }
+  h1 { font-size: 22px; line-height: 1.25; margin: 0 0 6px; }
+  .sub { color: var(--muted); margin: 0 0 18px; font-size: 15px; }
+  label.f { display: block; font-weight: 600; font-size: 14px; margin: 14px 0 6px; }
+  input[type=text], input[type=email], input[type=tel] { width: 100%; font: inherit; padding: 13px 14px; border: 1.5px solid var(--line); border-radius: var(--radius); background: #fff; color: var(--ink); }
+  input:focus-visible, button:focus-visible { outline: 3px solid var(--accent-soft); outline-offset: 1px; border-color: var(--accent); }
+  .err { color: var(--error); font-size: 14px; margin: 6px 0 0; min-height: 0; }
+  .err:empty { display: none; }
+  .opts { display: grid; gap: 10px; }
+  .opt { width: 100%; text-align: left; font: inherit; font-weight: 600; padding: 15px 16px; border: 1.5px solid var(--line); border-radius: var(--radius); background: #fff; color: var(--ink); cursor: pointer; }
+  .opt:hover { border-color: var(--accent); }
+  .opt[aria-pressed=true] { border-color: var(--accent); background: var(--accent-soft); }
+  .chips { display: flex; flex-wrap: wrap; gap: 8px; }
+  .chip { min-width: 48px; font: inherit; font-weight: 600; padding: 11px 12px; border: 1.5px solid var(--line); border-radius: 10px; background: #fff; color: var(--ink); cursor: pointer; }
+  .chip[aria-pressed=true] { border-color: var(--accent); background: var(--accent); color: var(--accent-ink); }
+  .primary { width: 100%; margin-top: 20px; font: inherit; font-weight: 700; font-size: 17px; padding: 15px; border: 0; border-radius: var(--radius); background: var(--accent); color: var(--accent-ink); cursor: pointer; }
+  .primary[disabled] { opacity: .55; cursor: default; }
+  .small { color: var(--muted); font-size: 13px; margin: 12px 0 0; }
+  .small a { color: inherit; }
+  .days { display: flex; gap: 8px; margin: 0 0 12px; overflow-x: auto; }
+  .day { flex: 1 0 auto; font: inherit; font-weight: 600; padding: 10px 14px; border: 1.5px solid var(--line); border-radius: 10px; background: #fff; color: var(--ink); cursor: pointer; }
+  .day[aria-pressed=true] { border-color: var(--accent); background: var(--accent-soft); }
+  .times { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+  .summary { background: var(--soft); border-radius: var(--radius); padding: 14px 16px; margin: 0 0 4px; }
+  .summary b { display: block; font-size: 19px; }
+  .hp { position: absolute; left: -9999px; height: 0; width: 0; opacity: 0; }
+  .step[hidden] { display: none; }
+  @media (prefers-reduced-motion: reduce) { .bar i { transition: none; } }
+</style>
+</head>
+<body>
+<main class="card" id="app">
+  <div class="bar" aria-hidden="true"><i id="bar"></i></div>
+  <button class="back" id="back" type="button" hidden>&larr; Back</button>
+
+  <section class="step" data-step="1">
+    <h1>Book your free A-Level Chemistry call</h1>
+    <p class="sub">Takes about a minute. Start with your details as the parent.</p>
+    <form id="f1" novalidate>
+      <label class="f" for="name">Your full name</label>
+      <input id="name" type="text" autocomplete="name" autocapitalize="words">
+      <p class="err" id="e-name" role="alert"></p>
+      <label class="f" for="email">Email</label>
+      <input id="email" type="email" autocomplete="email" inputmode="email">
+      <p class="err" id="e-email" role="alert"></p>
+      <label class="f" for="phone">Mobile number</label>
+      <input id="phone" type="tel" autocomplete="tel" inputmode="tel" placeholder="07123 456789">
+      <p class="err" id="e-phone" role="alert"></p>
+      <input class="hp" id="company" type="text" tabindex="-1" autocomplete="off" aria-hidden="true">
+      <button class="primary" type="submit">Continue</button>
+      <p class="err" id="e-form1" role="alert"></p>
+      <p class="small">We will use these details to confirm your call by text, WhatsApp or email. <a href="https://www.hsjtuition.co.uk/privacy" target="_blank" rel="noopener">Privacy policy</a>.</p>
+    </form>
+  </section>
+
+  <section class="step" data-step="2" hidden>
+    <h1>About your teen</h1>
+    <p class="sub">So the call is specific to them.</p>
+    <label class="f" for="teenName">Their first name</label>
+    <input id="teenName" type="text" autocapitalize="words" autocomplete="off">
+    <p class="err" id="e-teenName" role="alert"></p>
+    <label class="f">Year group</label>
+    <div class="chips" id="c-yearGroup"></div>
+    <p class="err" id="e-yearGroup" role="alert"></p>
+    <label class="f">Current Chemistry grade</label>
+    <div class="chips" id="c-currentGrade"></div>
+    <p class="err" id="e-currentGrade" role="alert"></p>
+    <label class="f">Target grade</label>
+    <div class="chips" id="c-targetGrade"></div>
+    <p class="err" id="e-targetGrade" role="alert"></p>
+    <button class="primary" type="button" id="n2">Continue</button>
+  </section>
+
+  <section class="step" data-step="3" hidden>
+    <h1>When would you like support to start?</h1>
+    <p class="sub"></p>
+    <div class="opts" id="o-start"></div>
+  </section>
+
+  <section class="step" data-step="4" hidden>
+    <h1>If the programme is right for your teen, are you in a position to invest in their grade?</h1>
+    <p class="sub">There is no commitment on the call. We just want to be upfront.</p>
+    <div class="opts" id="o-invest"></div>
+  </section>
+
+  <section class="step" data-step="5" hidden>
+    <h1>Can you and your teen both be on the call?</h1>
+    <p class="sub">The call works best with both of you there, so we ask for that before booking.</p>
+    <div class="opts" id="o-attend"></div>
+  </section>
+
+  <section class="step" data-step="6" hidden>
+    <h1>Pick a time</h1>
+    <p class="sub">All times are UK time. The call is on Google Meet.</p>
+    <div class="days" id="days"></div>
+    <div class="times" id="times"></div>
+    <p class="err" id="e-slots" role="alert"></p>
+  </section>
+
+  <section class="step" data-step="7" hidden>
+    <h1>Confirm your call</h1>
+    <p class="sub">One tap and you are booked.</p>
+    <div class="summary"><span>Your call</span><b id="s-when"></b><span id="s-who"></span></div>
+    <button class="primary" type="button" id="confirm">Confirm my call</button>
+    <p class="err" id="e-book" role="alert"></p>
+  </section>
+
+  <section class="step" data-step="done" hidden>
+    <h1>You are booked</h1>
+    <div class="summary"><span>Your call</span><b id="d-when"></b></div>
+    <p class="sub" style="margin-top:14px">We have sent the details to your email and phone. Please add it to your calendar and make sure your teen can join too.</p>
+  </section>
+
+  <section class="step" data-step="dq" hidden>
+    <h1 id="dq-title">Thanks for letting us know</h1>
+    <p class="sub" id="dq-text"></p>
+  </section>
+</main>
+
+<script>
+(function () {
+  'use strict';
+  var KEY = 'hsj_booking_v1';
+  var state = { step: 1, max: 1, token: '', contact: {}, answers: {}, slot: null, done: null, dq: null };
+  var cfg = null, days = [], dayIdx = 0, busy = false;
+  var $ = function (id) { return document.getElementById(id); };
+  var qs = new URLSearchParams(location.search);
+
+  function save() { try { localStorage.setItem(KEY, JSON.stringify({ t: Date.now(), s: state })); } catch (e) {} }
+  function load() {
+    try {
+      var raw = JSON.parse(localStorage.getItem(KEY) || 'null');
+      if (raw && raw.s && Date.now() - raw.t < 72 * 3600 * 1000) state = Object.assign(state, raw.s);
+    } catch (e) {}
+  }
+  function api(path, body) {
+    return fetch(path, body ? { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) } : undefined)
+      .then(function (r) { return r.json().catch(function () { return {}; }).then(function (d) { return { status: r.status, ok: r.ok, data: d }; }); });
+  }
+  function cookie(name) { var m = document.cookie.match(new RegExp('(?:^|; )' + name + '=([^;]*)')); return m ? decodeURIComponent(m[1]) : ''; }
+  function fbc() { var c = cookie('_fbc'); if (c) return c; var id = qs.get('fbclid'); return id ? 'fb.1.' + Date.now() + '.' + id : ''; }
+  function tracking() {
+    var t = { page: qs.get('page') || document.referrer || location.href.split('?')[0] };
+    ['fbclid', 'utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term'].forEach(function (k) { if (qs.get(k)) t[k] = qs.get(k); });
+    return t;
+  }
+  function tell(msg) { try { if (window.parent !== window) window.parent.postMessage(msg, '*'); } catch (e) {} }
+  function resize() { tell({ type: 'hsj-booking-height', height: document.documentElement.scrollHeight }); }
+  function setErr(id, msg) { var el = $('e-' + id); if (el) el.textContent = msg || ''; }
+  function clearErrs() { Array.prototype.forEach.call(document.querySelectorAll('.err'), function (e) { e.textContent = ''; }); }
+
+  function show(step) {
+    state.step = step; if (typeof step === 'number' && step > state.max) state.max = step;
+    Array.prototype.forEach.call(document.querySelectorAll('.step'), function (s) { s.hidden = String(s.getAttribute('data-step')) !== String(step); });
+    var n = typeof step === 'number' ? step : 7;
+    $('bar').style.width = Math.round((n / 7) * 100) + '%';
+    $('back').hidden = !(typeof step === 'number' && step > 1);
+    save(); resize();
+    var h = document.querySelector('.step:not([hidden]) h1'); if (h) { h.setAttribute('tabindex', '-1'); try { h.focus({ preventScroll: true }); } catch (e) {} }
+    if (step === 6) loadSlots();
+    if (step === 7) renderConfirm();
+  }
+
+  function chips(key, list) {
+    var box = $('c-' + key); box.innerHTML = '';
+    list.forEach(function (v) {
+      var b = document.createElement('button'); b.type = 'button'; b.className = 'chip'; b.textContent = v;
+      b.setAttribute('aria-pressed', String(state.answers[key] === v));
+      b.onclick = function () { state.answers[key] = v; chips(key, list); setErr(key, ''); save(); };
+      box.appendChild(b);
+    });
+  }
+  function options(key, list, next) {
+    var box = $('o-' + key); box.innerHTML = '';
+    list.forEach(function (v) {
+      var b = document.createElement('button'); b.type = 'button'; b.className = 'opt'; b.textContent = v;
+      b.setAttribute('aria-pressed', String(state.answers[key] === v));
+      b.onclick = function () { if (busy) return; state.answers[key] = v; options(key, list, next); next(v); };
+      box.appendChild(b);
+    });
+  }
+  function progress(step) {
+    return api('/api/progress', { token: state.token, step: step, answers: state.answers }).then(function (r) {
+      if (r.status === 401) { state.token = ''; show(1); setErr('form1', 'Your session timed out. Please confirm your details to carry on.'); return null; }
+      return r;
+    }).catch(function () { return { ok: false, data: {} }; });
+  }
+  function endForm(reason) {
+    state.dq = reason;
+    $('dq-text').textContent = reason === 'attend'
+      ? 'The call only works with both you and your teen there, so we cannot book it just yet. When you can both make it, come back to this page and pick a time.'
+      : 'Thanks for being upfront. It sounds like now is not the right time, so we will not book a call. If that changes, you are welcome to come back to this page.';
+    show('dq');
+  }
+
+  function loadSlots() {
+    $('days').innerHTML = ''; $('times').innerHTML = '<p class="small">Loading times...</p>'; setErr('slots', '');
+    api('/api/slots').then(function (r) {
+      if (!r.ok) { $('times').innerHTML = ''; setErr('slots', r.data.error || 'We could not load times. Please refresh.'); return; }
+      days = r.data.days || []; dayIdx = 0; renderSlots();
+    }).catch(function () { $('times').innerHTML = ''; setErr('slots', 'We could not load times. Please check your connection.'); });
+  }
+  function renderSlots() {
+    var d = $('days'), t = $('times'); d.innerHTML = ''; t.innerHTML = '';
+    if (!days.length) { setErr('slots', 'There are no times left in the next couple of days. We will contact you to arrange your call.'); resize(); return; }
+    days.forEach(function (day, i) {
+      var b = document.createElement('button'); b.type = 'button'; b.className = 'day'; b.textContent = day.label;
+      b.setAttribute('aria-pressed', String(i === dayIdx)); b.onclick = function () { dayIdx = i; renderSlots(); };
+      d.appendChild(b);
+    });
+    days[dayIdx].slots.forEach(function (s) {
+      var b = document.createElement('button'); b.type = 'button'; b.className = 'chip'; b.textContent = s.label;
+      b.onclick = function () { state.slot = { iso: s.iso, label: days[dayIdx].label + ' at ' + s.label }; progress(6); show(7); };
+      t.appendChild(b);
+    });
+    resize();
+  }
+  function renderConfirm() {
+    if (!state.slot) return show(6);
+    $('s-when').textContent = state.slot.label;
+    $('s-who').textContent = 'With ' + (state.answers.teenName || 'your teen') + ' and you, on Google Meet';
+  }
+  function finish(when) {
+    $('d-when').textContent = when; show('done');
+  }
+
+  $('f1').addEventListener('submit', function (e) {
+    e.preventDefault(); if (busy) return; clearErrs();
+    var body = { name: $('name').value, email: $('email').value, phone: $('phone').value, company: $('company').value, token: state.token, tracking: tracking() };
+    var btn = e.target.querySelector('.primary'); busy = true; btn.disabled = true; btn.textContent = 'Saving...';
+    api('/api/lead', body).then(function (r) {
+      if (r.ok && r.data.token) { state.token = r.data.token; state.contact = { name: body.name, email: body.email, phone: body.phone }; show(2); }
+      else if (r.data.errors) { Object.keys(r.data.errors).forEach(function (k) { setErr(k, r.data.errors[k]); }); }
+      else setErr('form1', r.data.error || 'Something went wrong. Please try again.');
+    }).catch(function () { setErr('form1', 'Please check your connection and try again.'); })
+      .then(function () { busy = false; btn.disabled = false; btn.textContent = 'Continue'; resize(); });
+  });
+
+  $('n2').addEventListener('click', function () {
+    if (busy) return; clearErrs();
+    state.answers.teenName = $('teenName').value.trim();
+    var a = state.answers, bad = false, g = cfg.grades;
+    if (a.teenName.length < 2) { setErr('teenName', "Please enter your teen's first name."); bad = true; }
+    if (!a.yearGroup) { setErr('yearGroup', 'Please choose a year group.'); bad = true; }
+    if (!a.currentGrade) { setErr('currentGrade', 'Please choose their current grade.'); bad = true; }
+    if (!a.targetGrade) { setErr('targetGrade', 'Please choose their target grade.'); bad = true; }
+    if (a.currentGrade && a.targetGrade && g.indexOf(a.targetGrade) > g.indexOf(a.currentGrade)) { setErr('targetGrade', 'The target grade should be the same as or higher than the current grade.'); bad = true; }
+    if (bad) { resize(); return; }
+    busy = true;
+    progress(2).then(function (r) {
+      busy = false; if (!r) return;
+      if (r.data && r.data.errors) { Object.keys(r.data.errors).forEach(function (k) { setErr(k, r.data.errors[k]); }); resize(); return; }
+      show(3);
+    });
+  });
+
+  $('confirm').addEventListener('click', function () {
+    if (busy || !state.slot) return; clearErrs();
+    var btn = $('confirm'); busy = true; btn.disabled = true; btn.textContent = 'Booking...';
+    api('/api/book', { token: state.token, answers: state.answers, startTime: state.slot.iso, fbp: cookie('_fbp'), fbc: fbc(), page: tracking().page }).then(function (r) {
+      if (r.ok) {
+        state.done = { when: r.data.when }; save();
+        tell({ type: 'hsj-booking-booked', eventId: r.data.eventId, redirect: r.data.thankYouUrl || '' });
+        if (r.data.thankYouUrl && window.parent === window) { location.href = r.data.thankYouUrl; return; }
+        finish(r.data.when);
+      } else if (r.status === 409) {
+        state.slot = null; show(6); setErr('slots', 'Sorry, that time has just been taken. Please pick another.');
+      } else if (r.status === 401) { state.token = ''; show(1); setErr('form1', 'Your session timed out. Please confirm your details to carry on.'); }
+      else setErr('book', r.data.error || 'We could not book that time. Please try again.');
+    }).catch(function () { setErr('book', 'Please check your connection and try again.'); })
+      .then(function () { busy = false; btn.disabled = false; btn.textContent = 'Confirm my call'; resize(); });
+  });
+
+  $('back').addEventListener('click', function () { if (!busy && typeof state.step === 'number' && state.step > 1) show(state.step - 1); });
+
+  function start() {
+    load();
+    chips('yearGroup', cfg.years); chips('currentGrade', cfg.grades); chips('targetGrade', cfg.grades);
+    options('start', cfg.start, function () { progress(3); show(4); });
+    options('invest', cfg.invest, function (v) {
+      busy = true; progress(4).then(function () { busy = false; if (v === cfg.invest[cfg.invest.length - 1]) endForm('invest'); else show(5); });
+    });
+    options('attend', cfg.attend, function (v) {
+      busy = true; progress(5).then(function () { busy = false; if (v === 'No') endForm('attend'); else show(6); });
+    });
+    $('name').value = state.contact.name || ''; $('email').value = state.contact.email || ''; $('phone').value = state.contact.phone || '';
+    $('teenName').value = state.answers.teenName || '';
+    if (state.done) return finish(state.done.when);
+    if (state.dq) return endForm(state.dq);
+    if (!state.token) return show(1);
+    show(typeof state.step === 'number' ? Math.min(state.step, 7) : 1);
+  }
+
+  api('/api/config').then(function (r) { cfg = r.data; start(); }).catch(function () { setErr('form1', 'The form could not load. Please refresh the page.'); });
+  window.addEventListener('resize', resize);
+  if (window.ResizeObserver) new ResizeObserver(resize).observe(document.body);
+})();
+</script>
+</body>
+</html>
