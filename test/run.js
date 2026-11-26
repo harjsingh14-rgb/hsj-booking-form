@@ -58,6 +58,11 @@ test('slots outside the 2 hour notice and 48 hour window are hidden', () => {
   assert.deepEqual(list, [iso(3), iso(47)]);
   assert.equal(slots.group(list).length, 2);
 });
+test('a nearly full diary widens the picker to 72 hours; a healthy one stays at 48', () => {
+  const now = Date.parse('2026-11-26T09:00:00Z'); const iso = (h) => new Date(now + h * 3600e3).toISOString();
+  assert.deepEqual(slots.offer([iso(1), iso(13), iso(53), iso(55), iso(80)], now), [iso(13), iso(53), iso(55)]);
+  assert.deepEqual(slots.offer([iso(5), iso(13), iso(30), iso(53)], now), [iso(5), iso(13), iso(30)]);
+});
 test('times show in UK time across the clock change', () => {
   assert.equal(slots.timeLabel('2026-07-01T15:00:00Z'), '4:00 pm');
   assert.equal(slots.timeLabel('2026-12-01T15:00:00Z'), '3:00 pm');
@@ -114,7 +119,7 @@ test('booking creates the appointment, tags booked and sends a hashed Schedule e
   assert.ok(!JSON.stringify(m.body).includes('parent@example.com'));
 });
 test('a slot that is taken, too soon, or too far ahead cannot be booked', async () => {
-  const soon = new Date(Date.now() + 3600e3).toISOString(); const far = new Date(Date.now() + 72 * 3600e3).toISOString(); const ok = new Date(Date.now() + 6 * 3600e3).toISOString();
+  const soon = new Date(Date.now() + 3600e3).toISOString(); const far = new Date(Date.now() + 96 * 3600e3).toISOString(); const ok = new Date(Date.now() + 6 * 3600e3).toISOString();
   freeSlots = { d: { slots: [soon, far] } };
   for (const st of [soon, far, ok]) assert.equal((await run(book, { body: { token: tok, answers: good, startTime: st } })).status, 409);
   freeSlots = { d: { slots: [ok] } }; apptStatus = 400;

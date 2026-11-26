@@ -11,7 +11,7 @@ One-click discovery call booking form for the landing page under the VSL. Parent
 | 3 | When should support start | |
 | 4 | In a position to invest | "Not right now" ends the form |
 | 5 | Will parent and teen both attend | "No" ends the form |
-| 6 | Pick a time | Next 48 hours only, at least 2 hours ahead |
+| 6 | Pick a time | Next 48 hours, at least 2 hours ahead. If fewer than 3 times are free, it shows the next 72 hours instead |
 | 7 | Confirm | Creates the appointment, then shows "You are booked" or sends them to the homework page |
 
 If someone leaves and comes back within 3 days, the form picks up where they left off.
