@@ -26,6 +26,17 @@ If someone leaves and comes back within 3 days, the form picks up where they lef
 
 Answers are added to the contact as a note when they book or are ended early, so Neha can read them before calling.
 
+## Pages
+
+| Address | What it is |
+|---|---|
+| `/` | Landing page: headline, video, booking form, reviews |
+| `/form/` | The booking form on its own |
+| `/privacy/` | Privacy notice linked from the form |
+| `/api/report` | Drop-off report (password) |
+
+The landing page only loads the Meta pixel after the visitor accepts cookies.
+
 ## Setup
 
 1. **Vercel**: sign in at vercel.com with GitHub, choose "Add New Project", and import `hsj-booking-form`. Leave every build setting as it is.
@@ -59,5 +70,5 @@ Before sending traffic, do one real run with your own details: check the contact
 
 ## To check before going live
 
-- The privacy link in `public/index.html` points to `https://www.hsjtuition.co.uk/privacy`. Change it if the policy lives elsewhere.
-- The accent colour is the `--accent` value at the top of `public/index.html`.
+- Read the privacy notice at `/privacy/` and correct anything that does not match how you handle data.
+- The headline, call steps and reviews on the landing page are in `public/index.html`.

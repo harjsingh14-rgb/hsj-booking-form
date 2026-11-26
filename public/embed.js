@@ -14,9 +14,9 @@
   keep.forEach(function (k) { if (from.get(k)) to.set(k, from.get(k)); });
   to.set('page', location.origin + location.pathname);
   var frame = document.createElement('iframe');
-  frame.src = origin + '/?' + to.toString();
+  frame.src = origin + '/form/?' + to.toString();
   frame.title = 'Book your call';
-  frame.style.cssText = 'width:100%;border:0;min-height:560px;display:block;';
+  frame.style.cssText = 'width:100%;border:0;min-height:480px;display:block;';
   frame.setAttribute('scrolling', 'no');
   mount.appendChild(frame);
   window.addEventListener('message', function (e) {
@@ -25,6 +25,7 @@
     if (e.data.type === 'hsj-booking-booked') {
       // Browser pixel event, de-duplicated against the server event by the shared event id.
       if (typeof window.fbq === 'function') window.fbq('track', 'Schedule', {}, { eventID: e.data.eventId });
+      try { window.dispatchEvent(new CustomEvent('hsj-booked', { detail: e.data })); } catch (err) {}
       if (e.data.redirect && /^https:\/\//.test(e.data.redirect)) window.location.href = e.data.redirect;
     }
   });
